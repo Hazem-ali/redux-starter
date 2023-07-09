@@ -1,6 +1,12 @@
 import configureStore from "./store/configureStore";
-// import * as actions from "./store/bugs";
-import * as actions from "./store/projects";
+import {
+  bugAdded,
+  bugRemoved,
+  bugResolved,
+  bugWiped,
+  getUnresolvedBugs,
+} from "./store/bugs";
+// import * as actions from "./store/projects";
 
 const store = configureStore();
 
@@ -10,11 +16,19 @@ const unsubscribe = store.subscribe(() => {
   return;
 });
 
-// store.dispatch(actions.bugAdded({ description: "Bug 1" }));
-// store.dispatch(actions.bugResolved({ id: 1 }));
-// store.dispatch(actions.bugWiped({ id: 1 }));
+store.dispatch(bugAdded({ description: "Bug 1" }));
+store.dispatch(bugAdded({ description: "Bug 2" }));
 
-store.dispatch(actions.projectAdded({ name: "ProjectX" }));
-store.dispatch(actions.projectRemoved({ id: 1 }));
 
+
+
+// store.dispatch(actions.projectAdded({ name: "ProjectX" }));
+// store.dispatch(actions.projectRemoved({ id: 1 }));
+const unresolvedBugs = getUnresolvedBugs(store.getState())
+store.dispatch(bugAdded({ description: "Bug 3" }));
+store.dispatch(bugResolved({ id: 1 }));
+const unresolvedBugs2 = getUnresolvedBugs(store.getState())
 console.log(store.getState());
+
+console.log(unresolvedBugs === unresolvedBugs2)
+
