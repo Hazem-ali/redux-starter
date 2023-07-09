@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
-
 let lastId = 0;
 
 // ? Slice is the function that wraps createActions and createReducers at one function
@@ -14,6 +13,7 @@ const slice = createSlice({
         id: ++lastId,
         description: action.payload.description,
         resolved: false,
+        assignedTo: null,
       });
     },
     bugRemoved: (state, action) => {
@@ -34,18 +34,25 @@ const slice = createSlice({
       console.log("end reducer");
       return state;
     },
+    bugAssigned: (state, action) => {
+      const bugIndex = state.findIndex((bug) => {
+        bug.id === action.payload.bugId;
+      });
+      state[bugIndex].assignedTo = action.payload.userId;
+      return state;
+    },
   },
 });
 
-export const { bugAdded, bugRemoved, bugResolved, bugWiped } = slice.actions;
+export const { bugAdded, bugRemoved, bugResolved, bugWiped, bugAssigned } =
+  slice.actions;
 export default slice.reducer;
 
 // export const getUnresolvedBugs = (state) => {
 //   return state.entities.bugs.filter((bug) => !bug.resolved);
 // };
 
-
-export const getUnresolvedBugs =createSelector(
-  state => state.entities.bugs,
+export const getUnresolvedBugs = createSelector(
+  (state) => state.entities.bugs,
   (bugs) => bugs.filter((bug) => !bug.resolved)
-)
+);
