@@ -6,27 +6,28 @@ import {
   bugWiped,
   bugAssigned,
   getUnresolvedBugs,
+  getBugsByUser,
+  loadBugs,
+  addBug,
+  resolveBug,
+  assignBugToUser,
 } from "./store/bugs";
-
-import { userAdded } from "./store/users";
-
-// import * as actions from "./store/projects";
 
 const store = configureStore();
 
-//* subscribe is a function that contains a callback function that is called whenever state changed
-const unsubscribe = store.subscribe(() => {
-  console.log("Store Changed", store.getState());
-  return;
-});
+// store.dispatch(bugAdded({ description: "Bug 1" }));
 
-store.dispatch(bugAdded({ description: "Bug 1" }));
-store.dispatch(bugAdded({ description: "Bug 2" }));
-store.dispatch(bugAdded({ description: "Bug 3" }));
-store.dispatch(bugResolved({ id: 1 }));
+// store.dispatch(
+//   addBug({
+//     description: "xyz123",
+//   })
+// );
+store.dispatch(loadBugs());
 
-store.dispatch(userAdded({ name: "Hazooom" }));
+setTimeout(() => {
+  // store.dispatch(resolveBug(2))
+  store.dispatch(assignBugToUser(2,600))
+  
+}, 2000);
 
-store.dispatch(bugAssigned({ bugId: 1, userId: 1 }));
-
-console.log(store.getState());
+// console.log(getBugsByUser(3)(store.getState()));
